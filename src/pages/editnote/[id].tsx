@@ -6,9 +6,9 @@ import Link from 'next/link';
 import { trpc } from '../../utils/trpc';
 
 interface FormData {
-    title: String;
-    description: String;
-    id: String;
+    title: string;
+    description: string;
+    id: string;
 }
 
 const Editnote: NextPage = () => {
