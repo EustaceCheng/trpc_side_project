@@ -17,10 +17,12 @@ export const trpc = createTRPCNext<AppRouter>({
             transformer: superjson,
             links: [
                 loggerLink({
-                    enabled: (opts) =>
-                        process.env.NODE_ENV === 'development' ||
+                    enabled: (opts) =>{
+                        console.log(opts)
+
+                       return process.env.NODE_ENV === 'development' ||
                         (opts.direction === 'down' &&
-                            opts.result instanceof Error),
+                            opts.result instanceof Error)},
                 }),
                 httpBatchLink({
                     url: `${getBaseUrl()}/api/trpc`,

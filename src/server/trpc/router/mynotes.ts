@@ -5,17 +5,23 @@ import { router, publicProcedure } from '../trpc';
 export const notesRouter = router({
     //fetch all notes
     allNotes: publicProcedure.query(async ({ ctx }) => {
+        console.log('allNotes')
         try {
-            return await ctx.prisma?.notes?.findMany({
+            const test = await ctx.prisma.notes.findMany()
+            console.log('test',test)
+            const data =  await ctx.prisma.notes.findMany({
                 select: {
                     title: true,
                     id: true,
                 },
-                // orderBy: {
-                //     createdAt: 'desc',
-                // },
+                orderBy: {
+                    createdAt: 'desc',
+                },
             });
+            console.log('data',data)
+            return data
         } catch (error) {
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
             console.log(`Cannot fetch your notes ${error}`);
         }
     }),
@@ -45,6 +51,7 @@ export const notesRouter = router({
                     },
                 });
             } catch (error) {
+                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                 console.log(`Note cannot be created ${error}`);
             }
         }),
@@ -64,6 +71,7 @@ export const notesRouter = router({
                     },
                 });
             } catch (error) {
+                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                 console.log(`Note detail not found ${error}`);
             }
         }),
@@ -98,6 +106,7 @@ export const notesRouter = router({
                     },
                 });
             } catch (error) {
+                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                 console.log(`Note cannot be updated ${error}`);
             }
         }),
@@ -117,6 +126,7 @@ export const notesRouter = router({
                     },
                 });
             } catch (error) {
+                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                 console.log(`Note cannot be deleted ${error}`);
             }
         }),

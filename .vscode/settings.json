@@ -1,3 +1,11 @@
 {
-    "cSpell.words": ["newnote", "trpc"]
+    "cSpell.words": [
+        "Authed",
+        "editnote",
+        "newnote",
+        "superjson",
+        "tailwindcss",
+        "tanstack",
+        "trpc"
+    ]
 }
