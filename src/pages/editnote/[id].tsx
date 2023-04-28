@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ChangeEventHandler } from 'react';
 import { type NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -26,16 +26,21 @@ const Editnote: NextPage = () => {
         });
 
     useEffect(() => {
-        setData({
-            title: messageDetail?.title,
-            description: messageDetail?.description,
-            id: messageDetail?.id,
-        });
-    }, []);
+        if (
+            messageDetail?.description &&
+            messageDetail?.id &&
+            messageDetail?.title
+        )
+            setData({
+                title: messageDetail?.title,
+                description: messageDetail?.description,
+                id: messageDetail?.id,
+            });
+    }, [messageDetail?.description, messageDetail?.id, messageDetail?.title]);
 
     const updateNewNote = trpc.mynotes.updateNote.useMutation({
         onMutate: () => {
-            utils.mynotes.allNotes.cancel();
+            void utils.mynotes.allNotes.cancel();
             const optimisticUpdate = utils.mynotes.allNotes.getData();
 
             if (optimisticUpdate) {
@@ -43,19 +48,23 @@ const Editnote: NextPage = () => {
             }
         },
         onSettled: () => {
-            utils.mynotes.allNotes.invalidate();
-            utils.mynotes.detailNote.invalidate();
+            void utils.mynotes.allNotes.invalidate();
+            void utils.mynotes.detailNote.invalidate();
         },
     });
 
-    const handelDescriptionChange = (event) => {
+    const handelDescriptionChange: ChangeEventHandler<HTMLTextAreaElement> = (
+        event
+    ) => {
         setData({
             ...data,
             description: event.target.value,
         });
     };
 
-    const handelTitleChange = (event) => {
+    const handelTitleChange: ChangeEventHandler<HTMLTextAreaElement> = (
+        event
+    ) => {
         setData({
             ...data,
             title: event.target.value,
