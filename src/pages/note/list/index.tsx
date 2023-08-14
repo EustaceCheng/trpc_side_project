@@ -2,7 +2,7 @@ import { type NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 
-import { trpc } from '../utils/trpc';
+import { trpc } from '../../../utils/trpc';
 import { signIn, signOut, useSession } from 'next-auth/react';
 const AllMyNotes: NextPage = () => {
     const utils = trpc.useContext();
@@ -30,12 +30,12 @@ const AllMyNotes: NextPage = () => {
                 return (
                     <div key={index} className="border border-gray-100 px-4 py-4">
                         <div className="flex items-center justify-between">
-                            <Link href={`/${note.id}`}>
+                            <Link href={`/note/${note.id}`}>
                                 <h5 className="text-1xl font-bold">{note.title}</h5>
                             </Link>
                             <div className="flex gap-3">
                                 <div>
-                                    <Link href={`editnote/${note.id}`}>
+                                    <Link href={`/note/edit/${note.id}`}>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             viewBox="0 0 24 24"

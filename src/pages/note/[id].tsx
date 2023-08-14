@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { trpc } from '../utils/trpc';
+import { trpc } from '../../utils/trpc';
 
 export default function NotesDetail() {
     const router = useRouter();

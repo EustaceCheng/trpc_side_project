@@ -19,7 +19,7 @@ const SignIn: NextPage = () => {
                     {sessionData && (
                         <>
                             <span>Logged in as {sessionData.user?.name}</span>
-                            <Link href="/list">
+                            <Link href="/note/list">
                                 <h5 className="text-1xl font-bold">list</h5>
                             </Link>
                         </>
