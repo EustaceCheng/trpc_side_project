@@ -10,7 +10,7 @@ const SignIn: NextPage = () => {
 
     const { data: secretMessage } = trpc.example.getSecretMessage.useQuery(
         undefined, // no input
-        { enabled: sessionData?.user !== undefined }
+        { enabled: sessionData?.user !== undefined },
     );
     return (
         <>
@@ -26,11 +26,7 @@ const SignIn: NextPage = () => {
                     )}
                     {secretMessage && <span> - {secretMessage}</span>}
                 </p>
-                <button
-                    onClick={
-                        sessionData ? () => void signOut() : () => void signIn()
-                    }
-                >
+                <button onClick={sessionData ? () => void signOut() : () => void signIn()}>
                     {sessionData ? 'Sign out' : 'Sign in'}
                 </button>
             </div>

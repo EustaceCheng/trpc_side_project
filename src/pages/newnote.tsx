@@ -1,27 +1,27 @@
-import { useState } from 'react';
+import { ChangeEventHandler, useState } from 'react';
 import { type NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { trpc } from '../utils/trpc';
 
 interface FormData {
-    title: String;
-    description: String;
+    title: string;
+    description: string;
 }
 
 const Newnote: NextPage = () => {
     const utils = trpc.useContext();
     const addNewNote = trpc.mynotes.newNote.useMutation({
-        onMutate: () => {
-            utils.mynotes.allNotes.cancel();
+        onMutate: async () => {
+            await utils.mynotes.allNotes.cancel();
             const optimisticUpdate = utils.mynotes.allNotes.getData();
 
             if (optimisticUpdate) {
-                utils.mynotes.allNotes.setData(optimisticUpdate);
+                utils.mynotes.allNotes.setData(undefined, optimisticUpdate);
             }
         },
-        onSettled: () => {
-            utils.mynotes.allNotes.invalidate();
+        onSettled: async () => {
+            await utils.mynotes.allNotes.invalidate();
         },
     });
     const [data, setData] = useState<FormData>({
@@ -29,14 +29,14 @@ const Newnote: NextPage = () => {
         description: '',
     });
 
-    const handelDescriptionChange = (event) => {
+    const handelDescriptionChange: ChangeEventHandler<HTMLTextAreaElement> = event => {
         setData({
             ...data,
             description: event.target.value,
         });
     };
 
-    const handelTitleChange = (event) => {
+    const handelTitleChange: ChangeEventHandler<HTMLInputElement> = event => {
         setData({
             ...data,
             title: event.target.value,
@@ -61,7 +61,7 @@ const Newnote: NextPage = () => {
                     Add new notes
                 </h1>
                 <form
-                    onSubmit={(event) => {
+                    onSubmit={event => {
                         event.preventDefault();
                         addNewNote.mutate({
                             title: data.title,
@@ -78,15 +78,15 @@ const Newnote: NextPage = () => {
                         required
                         value={data.title}
                         placeholder="Your title"
-                        onChange={(event) => handelTitleChange(event)}
+                        onChange={event => handelTitleChange(event)}
                         className="border-1 mb-2 block w-full rounded-sm border-green-800 bg-neutral-100 px-4 py-2 focus:outline-none"
                     />
                     <textarea
-                        type="text-area"
+                        // type="text-area"
                         required
                         value={data.description}
                         placeholder="Your description"
-                        onChange={(event) => handelDescriptionChange(event)}
+                        onChange={event => handelDescriptionChange(event)}
                         className="border-1 mb-2 block w-full rounded-sm border-green-800 bg-neutral-100 px-4 py-2 focus:outline-none"
                     />
                     <button

@@ -20,17 +20,12 @@ const Editnote: NextPage = () => {
     });
     const router = useRouter();
     const NotesId = router.query.id as string;
-    const { data: messageDetail, isLoading } =
-        trpc.mynotes?.detailNote.useQuery({
-            id: NotesId,
-        });
+    const { data: messageDetail, isLoading } = trpc.mynotes?.detailNote.useQuery({
+        id: NotesId,
+    });
 
     useEffect(() => {
-        if (
-            messageDetail?.description &&
-            messageDetail?.id &&
-            messageDetail?.title
-        )
+        if (messageDetail?.description && messageDetail?.id && messageDetail?.title)
             setData({
                 title: messageDetail?.title,
                 description: messageDetail?.description,
@@ -41,10 +36,11 @@ const Editnote: NextPage = () => {
     const updateNewNote = trpc.mynotes.updateNote.useMutation({
         onMutate: () => {
             void utils.mynotes.allNotes.cancel();
+
             const optimisticUpdate = utils.mynotes.allNotes.getData();
 
             if (optimisticUpdate) {
-                utils.mynotes.allNotes.setData(optimisticUpdate);
+                utils.mynotes.allNotes.setData(undefined, optimisticUpdate);
             }
         },
         onSettled: () => {
@@ -53,18 +49,14 @@ const Editnote: NextPage = () => {
         },
     });
 
-    const handelDescriptionChange: ChangeEventHandler<HTMLTextAreaElement> = (
-        event
-    ) => {
+    const handelDescriptionChange: ChangeEventHandler<HTMLTextAreaElement> = event => {
         setData({
             ...data,
             description: event.target.value,
         });
     };
 
-    const handelTitleChange: ChangeEventHandler<HTMLTextAreaElement> = (
-        event
-    ) => {
+    const handelTitleChange: ChangeEventHandler<HTMLInputElement> = event => {
         setData({
             ...data,
             title: event.target.value,
@@ -89,7 +81,7 @@ const Editnote: NextPage = () => {
                     Edit your note
                 </h1>
                 <form
-                    onSubmit={(event) => {
+                    onSubmit={event => {
                         event.preventDefault();
                         updateNewNote.mutate({
                             title: data.title,
@@ -99,6 +91,7 @@ const Editnote: NextPage = () => {
                         setData({
                             title: '',
                             description: '',
+                            id: '',
                         });
                     }}
                 >
@@ -107,15 +100,15 @@ const Editnote: NextPage = () => {
                         required
                         value={data?.title}
                         placeholder="Your title"
-                        onChange={(event) => handelTitleChange(event)}
+                        onChange={event => handelTitleChange(event)}
                         className="border-1 mb-2 block w-full rounded-sm border-green-800 bg-neutral-100 px-4 py-2 focus:outline-none"
                     />
                     <textarea
-                        type="text-area"
+                        // type="text-area"
                         required
                         value={data?.description}
                         placeholder="Your description"
-                        onChange={(event) => handelDescriptionChange(event)}
+                        onChange={event => handelDescriptionChange(event)}
                         className="border-1 mb-2 block w-full rounded-sm border-green-800 bg-neutral-100 px-4 py-2 focus:outline-none"
                     />
                     <button

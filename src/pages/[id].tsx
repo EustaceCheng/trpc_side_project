@@ -5,10 +5,9 @@ import { trpc } from '../utils/trpc';
 export default function NotesDetail() {
     const router = useRouter();
     const NotesId = router.query.id as string;
-    const { data: messageDetail, isLoading } =
-        trpc.mynotes?.detailNote.useQuery({
-            id: NotesId,
-        });
+    const { data: messageDetail, isLoading } = trpc.mynotes?.detailNote.useQuery({
+        id: NotesId,
+    });
 
     if (isLoading) return <>Loading...</>;
 

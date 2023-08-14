@@ -14,7 +14,7 @@ const AllMyNotes: NextPage = () => {
             const optimisticUpdate = utils.mynotes.allNotes.getData();
 
             if (optimisticUpdate) {
-                utils.mynotes.allNotes.setData(optimisticUpdate);
+                utils.mynotes.allNotes.setData(undefined, optimisticUpdate);
             }
         },
         onSettled: async () => {
@@ -28,15 +28,10 @@ const AllMyNotes: NextPage = () => {
         <>
             {Allnotes?.map((note, index) => {
                 return (
-                    <div
-                        key={index}
-                        className="border border-gray-100 px-4 py-4"
-                    >
+                    <div key={index} className="border border-gray-100 px-4 py-4">
                         <div className="flex items-center justify-between">
                             <Link href={`/${note.id}`}>
-                                <h5 className="text-1xl font-bold">
-                                    {note.title}
-                                </h5>
+                                <h5 className="text-1xl font-bold">{note.title}</h5>
                             </Link>
                             <div className="flex gap-3">
                                 <div>
@@ -78,9 +73,7 @@ const AllMyNotes: NextPage = () => {
                 );
             })}
             <p className="bg-green-50 p-7 text-xl font-medium text-green-900">
-                {Allnotes?.length === 0 && (
-                    <>✏️ &nbsp; You don t have any notes yet!</>
-                )}
+                {Allnotes?.length === 0 && <>✏️ &nbsp; You don t have any notes yet!</>}
             </p>
         </>
     );
@@ -110,13 +103,7 @@ const Home: NextPage = () => {
                     </div>
                 </div>
                 <div className="mt-5">
-                    <button
-                        onClick={
-                            sessionData
-                                ? () => void signOut()
-                                : () => void signIn()
-                        }
-                    >
+                    <button onClick={sessionData ? () => void signOut() : () => void signIn()}>
                         {sessionData ? 'Sign out' : 'Sign in'}
                     </button>
                     <AllMyNotes />

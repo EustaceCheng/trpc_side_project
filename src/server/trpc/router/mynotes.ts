@@ -5,11 +5,11 @@ import { router, publicProcedure } from '../trpc';
 export const notesRouter = router({
     //fetch all notes
     allNotes: publicProcedure.query(async ({ ctx }) => {
-        console.log('allNotes')
+        console.log('allNotes');
         try {
-            const test = await ctx.prisma.notes.findMany()
-            console.log('test',test)
-            const data =  await ctx.prisma.notes.findMany({
+            const test = await ctx.prisma.notes.findMany();
+            console.log('test', test);
+            const data = await ctx.prisma.notes.findMany({
                 select: {
                     title: true,
                     id: true,
@@ -18,8 +18,8 @@ export const notesRouter = router({
                     createdAt: 'desc',
                 },
             });
-            console.log('data',data)
-            return data
+            console.log('data', data);
+            return data;
         } catch (error) {
             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
             console.log(`Cannot fetch your notes ${error}`);
@@ -35,12 +35,11 @@ export const notesRouter = router({
                         message: 'Must be 5 or more characters of length!',
                     })
                     .max(200, {
-                        message:
-                            'Must not be more than 200 characters of length!',
+                        message: 'Must not be more than 200 characters of length!',
                     })
                     .trim(),
                 description: z.string(),
-            })
+            }),
         )
         .mutation(async ({ ctx, input }) => {
             try {
@@ -60,7 +59,7 @@ export const notesRouter = router({
         .input(
             z.object({
                 id: z.string(),
-            })
+            }),
         )
         .query(async ({ ctx, input }) => {
             const { id } = input;
@@ -85,13 +84,12 @@ export const notesRouter = router({
                         message: 'Must be 5 or more characters of length!',
                     })
                     .max(200, {
-                        message:
-                            'Must not be more than 200 characters of length!',
+                        message: 'Must not be more than 200 characters of length!',
                     })
                     .trim(),
                 description: z.string(),
                 id: z.string(),
-            })
+            }),
         )
         .mutation(async ({ ctx, input }) => {
             const { id } = input;
@@ -115,7 +113,7 @@ export const notesRouter = router({
         .input(
             z.object({
                 id: z.string(),
-            })
+            }),
         )
         .mutation(async ({ ctx, input }) => {
             const { id } = input;
