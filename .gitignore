@@ -29,3 +29,4 @@ yarn-error.log*
 
 
 /t3-app-v6
+.env
