@@ -1,8 +1,7 @@
+import { Button } from '@mui/material';
 import { type NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
-
-import { trpc } from '../utils/trpc';
 
 const Home: NextPage = () => {
     return (
@@ -28,7 +27,9 @@ const Home: NextPage = () => {
                 </div>
                 <div className="mt-5">
                     <Link href="/signin">
-                        <h5 className="text-1xl font-bold">signin</h5>
+                        <Button variant="contained" className="bg-green-300">
+                            signIn
+                        </Button>
                     </Link>
                 </div>
             </main>
