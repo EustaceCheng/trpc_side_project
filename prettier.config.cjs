@@ -1,6 +1,6 @@
 /** @type {import("prettier").Config} */
 
-const tailwindPlugin = require.resolve('prettier-plugin-tailwindcss');
+const tailwindPlugin = 'prettier-plugin-tailwindcss';
 
 module.exports = {
     trailingComma: 'all',
